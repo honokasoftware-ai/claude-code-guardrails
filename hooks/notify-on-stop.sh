@@ -53,10 +53,14 @@ case "$(uname -s)" in
     ;;
 esac
 
-# Terminal bell (works over SSH and in most terminals; tmux users: set monitor-bell).
+# Terminal bell: writes \a to /dev/tty. Whether you hear it depends on your terminal
+# (tmux swallows it unless you set monitor-bell). We cannot hear it from CI, so whether
+# it is audible on your setup is unverified - the write itself is best-effort and silent.
 printf '\a' > /dev/tty 2>/dev/null || true
 
-# Optional webhook (Slack incoming webhook or Discord with ?wait=false works with {"text":...}).
+# Optional webhook: POSTs {"text": "<title>: <summary>"} as JSON to $CC_NOTIFY_WEBHOOK.
+# That is the body shape Slack incoming webhooks document. We have not tested it against
+# a live Slack or Discord endpoint - failures are swallowed, so a wrong URL is silent.
 if [ -n "${CC_NOTIFY_WEBHOOK:-}" ] && command -v curl >/dev/null 2>&1; then
   PAYLOAD="$(printf '%s' "$SUMMARY" | jq -Rs --arg t "$TITLE" '{text: ($t + ": " + .)}' 2>/dev/null || printf '{"text":"%s"}' "$TITLE")"
   curl -s -m 5 -X POST -H 'Content-Type: application/json' -d "$PAYLOAD" "$CC_NOTIFY_WEBHOOK" >/dev/null 2>&1 || true

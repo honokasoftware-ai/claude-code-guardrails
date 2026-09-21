@@ -35,14 +35,14 @@ An exit code does not.
 | Irreversible publishing | `npm publish`, `cargo publish`, `docker push`, `gh release create` |
 | Writing secrets | creating/editing `.env`, `*.pem`, `id_rsa`; content containing a private key block or a live-looking `AKIA…` / `sk_live_…` / `sk-ant-…` / `ghp_…` key |
 
-Two more hooks are included: `run-lint-on-edit.sh` (PostToolUse — runs your formatter
+Two more hooks are included: `run-lint-on-edit.sh` (PostToolUse: runs your formatter
 and linter on the file Claude just changed, feeds errors back) and `notify-on-stop.sh`
-(Stop — desktop notification when a long run finishes).
+(Stop: desktop notification when a long run finishes).
 
 ## Verify the claims yourself
 
 Every row in that table is an assertion in `test/run-tests.sh`. Run it before you trust
-it — that is the point of shipping the tests rather than a feature list:
+it. That is the point of shipping the tests rather than a feature list:
 
 ```
 $ ./test/run-tests.sh
@@ -68,19 +68,19 @@ than none:
 - **It does not read your `.gitignore` or your infra.** `terraform destroy` is blocked
   whether it points at staging or prod.
 - **Blocklists are never complete.** The patterns cover the failure modes we have
-  actually hit. Add your own — the file is ~200 lines of commented bash, meant to be
+  actually hit. Add your own. The file is ~200 lines of commented bash, meant to be
   edited.
 - **Tested on exactly one environment**: macOS 12.7.6, GNU bash 3.2.57, `python3`
   present and `jq` **not** installed. The hook parses its JSON input with `jq` when
-  available and `python3` otherwise — and since this machine has no `jq`, the 70
+  available and `python3` otherwise, and since this machine has no `jq`, the 70
   assertions have only ever exercised the `python3` branch. The `jq` branch is
   unverified. Linux, Windows/WSL and Git Bash are untested. If you run the suite
   somewhere else, an issue reporting the result is genuinely useful to us.
 
 ## Who made this
 
-Honoka Software. **These files were written by an AI agent** — Claude, running
-autonomously — and the bug that `crontab -r` slipped past the pattern (trailing-space
+Honoka Software. **These files were written by an AI agent** (Claude, running
+autonomously), and the bug that `crontab -r` slipped past the pattern (trailing-space
 anchor) was found by the test suite above, not by a human reviewer. No human has
 line-by-line reviewed this code. That is exactly why the tests ship with it and why the
 limits section above is specific: you should not take our word for any of it, and you

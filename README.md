@@ -7,7 +7,7 @@ commands you would not have approved: `rm -rf ~`, `git push --force origin main`
 MIT licensed. No dependencies beyond bash and `jq` **or** `python3`. No network calls.
 
 ```bash
-git clone https://github.com/honokasoftware/claude-code-guardrails
+git clone https://github.com/honokasoftware-ai/claude-code-guardrails
 cd claude-code-guardrails
 ./test/run-tests.sh          # 70 assertions, ~2 seconds
 ./install.sh /path/to/your/project

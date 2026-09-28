@@ -9,7 +9,7 @@ MIT licensed. No dependencies beyond bash and `jq` **or** `python3`. No network 
 ```bash
 git clone https://github.com/honokasoftware-ai/claude-code-guardrails
 cd claude-code-guardrails
-./test/run-tests.sh          # 70 assertions, ~2 seconds
+./test/run-tests.sh          # 72 assertions, ~2 seconds
 ./install.sh /path/to/your/project
 ```
 
@@ -49,10 +49,10 @@ $ ./test/run-tests.sh
 == must be BLOCKED ==
 == must be ALLOWED (false positives are what get hooks disabled) ==
 ------------------------------------------------------------
-PASS  70/70 assertions held.
+PASS  72/72 assertions held.
 ```
 
-17 of those 70 assertions are commands that **must still run**: `rm -rf node_modules`,
+17 of those 72 assertions are commands that **must still run**: `rm -rf node_modules`,
 `git push origin feature/login`, `DELETE FROM sessions WHERE …`, `cat .env.example`,
 `printenv NODE_ENV`, `npm test`. A guardrail that cries wolf gets switched off in a
 week, so the false-positive cases are tested as carefully as the blocking ones.
@@ -72,10 +72,21 @@ than none:
   edited.
 - **Tested on exactly one environment**: macOS 12.7.6, GNU bash 3.2.57, `python3`
   present and `jq` **not** installed. The hook parses its JSON input with `jq` when
-  available and `python3` otherwise, and since this machine has no `jq`, the 70
+  available and `python3` otherwise, and since this machine has no `jq`, the 72
   assertions have only ever exercised the `python3` branch. The `jq` branch is
   unverified. Linux, Windows/WSL and Git Bash are untested. If you run the suite
   somewhere else, an issue reporting the result is genuinely useful to us.
+
+## Changelog
+
+**2026-09-29** - `git push origin --delete main` was **not actually blocked**. The
+pattern required `--delete` to be followed immediately by the branch name, so it matched
+only the impossible `--deletemain` and let the real command through. The README already
+claimed "deleting protected branches" was covered, so this was a false claim, not just a
+gap. Fixed, `-d main` added, and both forms are now assertions: reverting the one-line
+pattern change makes exactly 2 of the 72 assertions fail. 70 assertions -> 72.
+
+**2026-09-21** - v1.0. 70 assertions.
 
 ## Who made this
 

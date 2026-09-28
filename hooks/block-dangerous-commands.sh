@@ -117,7 +117,7 @@ fi
 if printf '%s' "$NORM" | grep -Eq 'git[[:space:]]+push[[:space:]]+[^ ]+[[:space:]]+\+(main|master|release/|production|prod)'; then
   block "force push via +refspec to a protected branch: $CMD"
 fi
-if printf '%s' "$NORM" | grep -Eq 'git[[:space:]]+push[[:space:]]+[^ ]+[[:space:]]+(--delete|:)(main|master|release/)'; then
+if printf '%s' "$NORM" | grep -Eq 'git[[:space:]]+push[[:space:]]+[^ ]+[[:space:]]+(--delete[[:space:]]*|-d[[:space:]]+|:)(main|master|release/)'; then
   block "deleting a protected remote branch: $CMD"
 fi
 if printf '%s' "$NORM" | grep -Eq 'git[[:space:]]+branch[[:space:]]+-D[[:space:]]+(main|master|release/)'; then

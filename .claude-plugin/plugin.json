@@ -1,0 +1,15 @@
+{
+  "name": "claude-code-guardrails",
+  "displayName": "Claude Code Guardrails",
+  "version": "1.1.0",
+  "description": "PreToolUse hooks that block destructive shell commands, secret reads and irreversible publishes. Ships with the 72-assertion test suite that proves every claim.",
+  "author": {
+    "name": "Honoka Software",
+    "email": "honokasoftware@gmail.com",
+    "url": "https://github.com/honokasoftware-ai"
+  },
+  "homepage": "https://github.com/honokasoftware-ai/claude-code-guardrails",
+  "repository": "https://github.com/honokasoftware-ai/claude-code-guardrails",
+  "license": "MIT",
+  "keywords": ["hooks", "guardrails", "safety", "pretooluse", "destructive-commands"]
+}

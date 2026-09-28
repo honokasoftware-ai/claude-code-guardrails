@@ -1,0 +1,15 @@
+{
+  "name": "honoka-software",
+  "description": "Plugins from Honoka Software. Every claim in them ships with the test that proves it.",
+  "owner": {
+    "name": "Honoka Software",
+    "email": "honokasoftware@gmail.com"
+  },
+  "plugins": [
+    {
+      "name": "claude-code-guardrails",
+      "source": "./",
+      "description": "PreToolUse hooks that block rm -rf ~, force pushes to main, DROP DATABASE, cat .env and curl | sh. 72 assertions included."
+    }
+  ]
+}

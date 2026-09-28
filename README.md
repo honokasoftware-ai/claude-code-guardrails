@@ -6,10 +6,28 @@ commands you would not have approved: `rm -rf ~`, `git push --force origin main`
 
 MIT licensed. No dependencies beyond bash and `jq` **or** `python3`. No network calls.
 
+## Install
+
+As a plugin, in a Claude Code session. Two lines, nothing to clone:
+
+```
+/plugin marketplace add honokasoftware-ai/claude-code-guardrails
+/plugin install claude-code-guardrails@honoka-software
+```
+
+That wires up **one thing: the `PreToolUse` hook below**, on `Bash`, `Write`, `Edit` and
+`MultiEdit`. It adds no skills, no agents, no MCP servers and no tokens to your context
+(`claude plugin details claude-code-guardrails` reports `Always-on: ~0 tok`). The
+`permissions.deny` list and the two optional hooks in `hooks/settings.json` are **not**
+part of the plugin; see [What the plugin does not install](#what-the-plugin-does-not-install).
+
+Or copy the files into one project, which is what the plugin is a wrapper around:
+
 ```bash
 git clone https://github.com/honokasoftware-ai/claude-code-guardrails
 cd claude-code-guardrails
 ./test/run-tests.sh          # 72 assertions, ~2 seconds
+./test/test-plugin.sh        # 10 assertions that the plugin wiring works
 ./install.sh /path/to/your/project
 ```
 
@@ -57,6 +75,22 @@ PASS  72/72 assertions held.
 `printenv NODE_ENV`, `npm test`. A guardrail that cries wolf gets switched off in a
 week, so the false-positive cases are tested as carefully as the blocking ones.
 
+## What the plugin does not install
+
+`hooks/settings.json` in this repo is the full configuration and is **larger than the
+plugin**. Installing the plugin gives you the blocking hook and nothing else. These stay
+a manual merge into your own `.claude/settings.json`:
+
+- **The `permissions.deny` list** (`Read(./.env)`, `Read(~/.ssh/**)`, `Read(./**/*.pem)`,
+  and so on). A plugin's `settings.json` can only set `agent` and `subagentStatusLine`,
+  so a plugin cannot deny a permission for you. This is a second, independent layer: the
+  deny list stops the `Read` tool, the hook stops `cat`. Copy that block if you want both.
+- **`run-lint-on-edit.sh`** (PostToolUse) and **`notify-on-stop.sh`** (Stop). Both are
+  included in the plugin directory but are left out of `hooks/hooks.json` on purpose: one
+  runs your formatter on every edit and the other raises desktop notifications, and
+  neither should start happening to you because you installed a guardrail. To turn them
+  on, copy their two blocks out of `hooks/settings.json`.
+
 ## What this does NOT do
 
 Being specific about the limits, because a security tool that oversells itself is worse
@@ -78,6 +112,15 @@ than none:
   somewhere else, an issue reporting the result is genuinely useful to us.
 
 ## Changelog
+
+**2026-09-29** - v1.1.0. Installable as a Claude Code plugin: `.claude-plugin/plugin.json`
+and a one-plugin marketplace in `.claude-plugin/marketplace.json`, with the hook wiring in
+`hooks/hooks.json`. `test/test-plugin.sh` holds 10 assertions that the packaging works,
+including running the command string out of `hooks/hooks.json` from a directory that is not
+this repo, so a relative path cannot pass here and break for everyone else. `--prove` breaks
+the packaging five ways and requires all five to be caught. Verified end to end by
+installing into a throwaway `CLAUDE_CONFIG_DIR` on macOS with Claude Code 2.1.282:
+`claude plugin details` reports `Hooks (1) PreToolUse` and `Always-on: ~0 tok`.
 
 **2026-09-29** - `git push origin --delete main` was **not actually blocked**. The
 pattern required `--delete` to be followed immediately by the branch name, so it matched

@@ -5,7 +5,7 @@
 #   ./test/test-plugin.sh --prove  break the packaging 5 ways and show each break is caught
 #
 # run-tests.sh proves the hook blocks the right commands. This file proves that a user who
-# runs `/plugin install claude-code-guardrails@honoka-software` gets that same hook wired up:
+# runs `/plugin install guardrail-hooks@honoka-software` gets that same hook wired up:
 # the manifests validate, the two names match, the marketplace source exists, the matchers
 # cover the tools, and the command string in hooks/hooks.json really executes the hook when
 # ${CLAUDE_PLUGIN_ROOT} is substituted and the working directory is the user's project, not

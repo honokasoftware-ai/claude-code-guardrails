@@ -7,7 +7,7 @@
   },
   "plugins": [
     {
-      "name": "claude-code-guardrails",
+      "name": "guardrail-hooks",
       "source": "./",
       "description": "PreToolUse hooks that block rm -rf ~, force pushes to main, DROP DATABASE, cat .env and curl | sh. 72 assertions included."
     }

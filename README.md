@@ -12,12 +12,12 @@ As a plugin, in a Claude Code session. Two lines, nothing to clone:
 
 ```
 /plugin marketplace add honokasoftware-ai/claude-code-guardrails
-/plugin install claude-code-guardrails@honoka-software
+/plugin install guardrail-hooks@honoka-software
 ```
 
 That wires up **one thing: the `PreToolUse` hook below**, on `Bash`, `Write`, `Edit` and
 `MultiEdit`. It adds no skills, no agents, no MCP servers and no tokens to your context
-(`claude plugin details claude-code-guardrails` reports `Always-on: ~0 tok`). The
+(`claude plugin details guardrail-hooks` reports `Always-on: ~0 tok`). The
 `permissions.deny` list and the two optional hooks in `hooks/settings.json` are **not**
 part of the plugin; see [What the plugin does not install](#what-the-plugin-does-not-install).
 

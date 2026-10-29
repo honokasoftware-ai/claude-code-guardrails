@@ -1,5 +1,5 @@
 {
-  "name": "claude-code-guardrails",
+  "name": "guardrail-hooks",
   "displayName": "Claude Code Guardrails",
   "version": "1.1.0",
   "description": "PreToolUse hooks that block destructive shell commands, secret reads and irreversible publishes. Ships with the 72-assertion test suite that proves every claim.",
